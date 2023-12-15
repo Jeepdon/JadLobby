@@ -10,6 +10,7 @@ import net.minestom.server.entity.fakeplayer.FakePlayerOption;
 import net.minestom.server.event.player.PlayerEntityInteractEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.extras.MojangAuth;
+import net.minestom.server.extras.velocity.VelocityProxy;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
@@ -34,7 +35,7 @@ public class Server {
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         instanceContainer = instanceManager.createInstanceContainer(new AnvilLoader(Path.of("Lobby")));
 
-        MojangAuth.init();
+        VelocityProxy.enable("0d1yrkMhZEme"); // exposed secret does not matter yet
 
         MinecraftServer.getGlobalEventHandler().addListener(PlayerLoginEvent.class, event -> {
             Player player = event.getPlayer();
@@ -51,11 +52,6 @@ public class Server {
     private void initiateFakePlayer() {
         FakePlayerOption fakePlayerOption = new FakePlayerOption();
         fakePlayerOption.setInTabList(false);
-        FakePlayer.initPlayer(UUID.randomUUID(),"Hoihoi",fakePlayerOption, fakePlayer -> {
-            new NPC(fakePlayer,Skin.SMIKKELBEER);
-        } );
+        FakePlayer.initPlayer(UUID.randomUUID(),"Hoihoi",fakePlayerOption, fakePlayer -> new NPC(fakePlayer,Skin.SMIKKELBEER));
     }
-
-
-
 }
